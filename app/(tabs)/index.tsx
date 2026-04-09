@@ -281,7 +281,7 @@ export default function HomePage() {
     }
 
     function handleOpenProject(projectName: string) {
-        router.push({ pathname: "/project/[name]", params: { name: projectName } });
+        router.push({ pathname: "/editor/[name]", params: { name: projectName } });
     }
 
     // --- render ---
