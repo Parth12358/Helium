@@ -5,7 +5,7 @@
 ## 1. Project Setup ✅
 
 - [x] Install Expo CLI
-- [x] Create new Expo project — `Helium`
+- [x] Create new Expo project — `iVibe`
 - [x] Install core dependencies
     - [x] `isomorphic-git`
     - [x] `@expo/vector-icons`
@@ -51,40 +51,42 @@
 
 ---
 
-## 3. Home Page
+## 3. Home Page ✅
 
-- [ ] Home screen as the app entry point
-- [ ] List all existing projects
-- [ ] Tap project to open it and navigate to file tree
-- [ ] Create new project button
-    - [ ] Input for project name
-    - [ ] Confirmation to create
-- [ ] Long press project for options (three dots button also)
-    - [ ] Rename project
-    - [ ] Delete project
-- [ ] Empty state when no projects exist
+- [x] Home screen as the app entry point
+- [x] List all existing projects
+- [x] Tap project to open it and navigate to file tree
+- [x] Create new project button
+    - [x] Input for project name
+    - [x] Confirmation to create
+- [x] Long press project for options (three dots button also)
+    - [x] Rename project
+    - [x] Delete project
+- [x] Empty state when no projects exist
 
 ---
 
 ## 4. File Tree Sidebar
 
-- [ ] Recursive file tree component
+- [ ] `FileTree` component in `components/FileTree.tsx`
+    - [ ] Receives `projectName` as prop
+    - [ ] Collapsible — collapses to thin bar with icon to re-expand
+    - [ ] Draggable/resizable width like VS Code
+- [ ] Recursive file tree rendering
     - [ ] Renders folders and files
-    - [ ] Folders are collapsible/expandable
+    - [ ] Folders have chevron, tap to expand/collapse inline
     - [ ] Files show correct icon per extension (.js, .ts, .css, .md, etc.)
 - [ ] Tap file to open in editor
-- [ ] Long press file for context menu
-    - [ ] Rename
-    - [ ] Delete
-    - [ ] Move
-- [ ] Context menu for folders
-    - [ ] New file inside folder
-    - [ ] New subfolder
-    - [ ] Rename
-    - [ ] Delete
+- [ ] Long press file or folder for context menu
+    - [ ] File options: Rename, Delete, Move
+    - [ ] Folder options: New file, New subfolder, Rename, Delete, Move
 - [ ] New file button at top of sidebar
 - [ ] New folder button at top of sidebar
 - [ ] Active file highlighted in tree
+- [ ] Temporary editor screen `app/editor/[name].tsx`
+    - [ ] Receives project name from route params
+    - [ ] Renders FileTree on the left
+    - [ ] Empty placeholder on the right for now
 
 ---
 
