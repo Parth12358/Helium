@@ -9,7 +9,9 @@
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "targetDeviceFamily": "2",
+            "requiresFullScreen": false
         },
 
         "plugins": [
