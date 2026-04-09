@@ -1,0 +1,67 @@
+FileTree Component Todo — components/FileTree.tsx
+
+## Setup
+- [ ] Create components/FileTree.tsx
+- [ ] Define props: projectName: string, onFileOpen: (relativePath: string) => void
+- [ ] Import listDirectories, createFile, createFolder, deleteFile, deleteFolder, rename, moveFile, moveFolder from @/utils/filesystem
+- [ ] Import useTheme from constants/theme.ts
+- [ ] Import useCallback, useState, useMemo from react
+
+## State
+- [ ] collapsed: boolean — sidebar collapsed or expanded
+- [ ] expandedFolders: Set<string> — tracks which folders are open
+- [ ] selectedFile: string | null — currently active file
+- [ ] contents at each path — files and folders per directory
+
+## Collapsible
+- [ ] Toggle button at top of sidebar
+- [ ] When collapsed, render thin bar (~40px) with only toggle icon
+- [ ] When expanded, render full sidebar
+- [ ] Animate with Animated from react-native
+
+## Header (expanded only)
+- [ ] Project name at top
+- [ ] New File button
+- [ ] New Folder button
+
+## File Tree Rendering
+- [ ] Load root contents on mount via listDirectories(projectName, '')
+- [ ] Render folders with chevron icon (▶ collapsed, ▼ expanded)
+- [ ] Tap folder to toggle expand/collapse
+- [ ] When folder expanded, load its contents via listDirectories(projectName, relativePath)
+- [ ] Render files with icon based on extension
+- [ ] Tap file to call onFileOpen(relativePath)
+- [ ] Highlight selected/active file
+- [ ] Indent nested items based on depth
+
+## File Icons
+- [ ] .ts .tsx — blue
+- [ ] .js .jsx — yellow
+- [ ] .css — purple
+- [ ] .html — orange
+- [ ] .json — yellow
+- [ ] .md — white
+- [ ] folders — yellow when expanded, default when collapsed
+
+## Context Menu (long press)
+- [ ] File options: Rename, Delete, Move
+- [ ] Folder options: New File, New Subfolder, Rename, Delete, Move
+- [ ] Rename — modal with input, calls rename()
+- [ ] Delete — confirmation alert, calls deleteFile() or deleteFolder()
+- [ ] Move — modal with destination input, calls moveFile() or moveFolder()
+- [ ] New File inside folder — modal with filename input, calls createFile()
+- [ ] New Subfolder — modal with name input, calls createFolder()
+- [ ] Refresh tree after every operation
+
+## New File / New Folder (header buttons)
+- [ ] Modal with text input for name
+- [ ] Creates at project root
+- [ ] Refresh tree after creation
+
+## Rules
+- [ ] All colors from useTheme()
+- [ ] Styles memoized with useMemo
+- [ ] All filesystem results handle ok and error
+- [ ] No hardcoded colors or inline styles
+- [ ] TypeScript strict compliant
+- [ ] accessibilityLabel on all interactive elements
