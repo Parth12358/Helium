@@ -1,4 +1,4 @@
-// import { FileTree } from "@/components/FileTree";
+import FileTree from "@/components/FileTree";
 import { Theme, useTheme } from "@/constants/theme";
 import { router, useLocalSearchParams } from "expo-router";
 import { useMemo } from "react";
@@ -97,7 +97,10 @@ export default function EditorScreen() {
             <View style={styles.body}>
                 {/* File tree */}
                 <View style={styles.fileTreePane}>
-                    {/* <FileTree projectName={name} /> */}
+                    <FileTree 
+                    projectName={name ?? ''} 
+                    onFileOpen={(relativePath) => console.log('open', relativePath)} 
+                    />
                 </View>
 
                 {/* Editor placeholder */}

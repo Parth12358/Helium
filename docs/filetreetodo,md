@@ -1,4 +1,4 @@
-FileTree Component Todo — components/FileTree.tsx
+# FileTree Component Todo — components/FileTree.tsx
 
 ## Setup
 - [ ] Create components/FileTree.tsx
@@ -12,6 +12,7 @@ FileTree Component Todo — components/FileTree.tsx
 - [ ] expandedFolders: Set<string> — tracks which folders are open
 - [ ] selectedFile: string | null — currently active file
 - [ ] contents at each path — files and folders per directory
+- [ ] inlineInput: { path: string, type: 'file' | 'folder' | 'rename' } | null — tracks active inline input
 
 ## Collapsible
 - [ ] Toggle button at top of sidebar
@@ -21,8 +22,8 @@ FileTree Component Todo — components/FileTree.tsx
 
 ## Header (expanded only)
 - [ ] Project name at top
-- [ ] New File button
-- [ ] New Folder button
+- [ ] New File button — triggers inline input at root level
+- [ ] New Folder button — triggers inline input at root level
 
 ## File Tree Rendering
 - [ ] Load root contents on mount via listDirectories(projectName, '')
@@ -34,6 +35,14 @@ FileTree Component Todo — components/FileTree.tsx
 - [ ] Highlight selected/active file
 - [ ] Indent nested items based on depth
 
+## Inline Input (VS Code style)
+- [ ] Appears directly in the tree at the relevant folder level
+- [ ] Used for: new file, new folder, rename
+- [ ] TextInput auto-focused when it appears
+- [ ] Enter to confirm, Escape to cancel
+- [ ] No modal — fully inline
+- [ ] Refresh tree after confirm
+
 ## File Icons
 - [ ] .ts .tsx — blue
 - [ ] .js .jsx — yellow
@@ -44,18 +53,20 @@ FileTree Component Todo — components/FileTree.tsx
 - [ ] folders — yellow when expanded, default when collapsed
 
 ## Context Menu (long press)
+- [ ] Appears as popover near the long pressed item — no bottom sheet
 - [ ] File options: Rename, Delete, Move
 - [ ] Folder options: New File, New Subfolder, Rename, Delete, Move
-- [ ] Rename — modal with input, calls rename()
+- [ ] Rename — dismisses popover, triggers inline input replacing item name
 - [ ] Delete — confirmation alert, calls deleteFile() or deleteFolder()
-- [ ] Move — modal with destination input, calls moveFile() or moveFolder()
-- [ ] New File inside folder — modal with filename input, calls createFile()
-- [ ] New Subfolder — modal with name input, calls createFolder()
+- [ ] Move — inline input for destination path, Enter to confirm, Escape to cancel
+- [ ] New File inside folder — inline input appears inside that folder
+- [ ] New Subfolder — inline input appears inside that folder
 - [ ] Refresh tree after every operation
 
 ## New File / New Folder (header buttons)
-- [ ] Modal with text input for name
-- [ ] Creates at project root
+- [ ] Inline input appears at project root level in the tree
+- [ ] Type name, Enter to confirm, Escape to cancel
+- [ ] No modal — VS Code style inline naming
 - [ ] Refresh tree after creation
 
 ## Rules

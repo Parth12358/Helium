@@ -7,22 +7,22 @@
 - [x] Install Expo CLI
 - [x] Create new Expo project — `iVibe`
 - [x] Install core dependencies
-    - [x] `isomorphic-git`
-    - [x] `@expo/vector-icons`
-    - [x] `expo-file-system`
-    - [x] `expo-secure-store`
-    - [x] `expo-network`
+  - [x] `isomorphic-git`
+  - [x] `@expo/vector-icons`
+  - [x] `expo-file-system`
+  - [x] `expo-secure-store`
+  - [x] `expo-network`
 - [x] Set up folder structure
-    ```
-    /app
-      /editor
-      /filemanager
-      /git
-      /utils
-    /components
-    /constants
-    /hooks
-    ```
+  ```
+  /app
+    /editor
+    /filemanager
+    /git
+    /utils
+  /components
+  /constants
+  /hooks
+  ```
 - [x] Configure app.json (dark mode, tablet support, expo-router, splash screen)
 - [x] TypeScript configured with strict mode
 
@@ -31,15 +31,15 @@
 ## 2. File System Layer ✅
 
 - [x] Create a file system abstraction using `expo-file-system`
-- [x] `createFile(path, content)`
-- [x] `readFile(path)`
-- [x] `writeFile(path, content)`
-- [x] `deleteFile(path)`
-- [x] `createFolder(path)`
-- [x] `deleteFolder(path)`
-- [x] `listDirectory(path)`
-- [x] `rename(path, newName)`
-- [x] `moveFile(path, destination)`
+- [x] `createFile(path, content)` 
+- [x] `readFile(path)` 
+- [x] `writeFile(path, content)` 
+- [x] `deleteFile(path)` 
+- [x] `createFolder(path)` 
+- [x] `deleteFolder(path)` 
+- [x] `listDirectory(path)` 
+- [x] `rename(path, newName)` 
+- [x] `moveFile(path, destination)` 
 - [x] `moveFolder(path, destination)`
 - [x] `renameProject(oldName, newName)`
 - [x] `createProject(name)`
@@ -57,11 +57,11 @@
 - [x] List all existing projects
 - [x] Tap project to open it and navigate to file tree
 - [x] Create new project button
-    - [x] Input for project name
-    - [x] Confirmation to create
+  - [x] Input for project name
+  - [x] Confirmation to create
 - [x] Long press project for options (three dots button also)
-    - [x] Rename project
-    - [x] Delete project
+  - [x] Rename project
+  - [x] Delete project
 - [x] Empty state when no projects exist
 
 ---
@@ -69,24 +69,32 @@
 ## 4. File Tree Sidebar
 
 - [ ] `FileTree` component in `components/FileTree.tsx`
-    - [ ] Receives `projectName` as prop
-    - [ ] Collapsible — collapses to thin bar with icon to re-expand
-    - [ ] Draggable/resizable width like VS Code
+  - [ ] Receives `projectName` as prop
+  - [ ] Collapsible — collapses to thin bar with icon to re-expand
+  - [ ] Draggable/resizable width like VS Code
 - [ ] Recursive file tree rendering
-    - [ ] Renders folders and files
-    - [ ] Folders have chevron, tap to expand/collapse inline
-    - [ ] Files show correct icon per extension (.js, .ts, .css, .md, etc.)
+  - [ ] Renders folders and files
+  - [ ] Folders have chevron, tap to expand/collapse inline
+  - [ ] Files show correct icon per extension (.js, .ts, .css, .md, etc.)
 - [ ] Tap file to open in editor
 - [ ] Long press file or folder for context menu
-    - [ ] File options: Rename, Delete, Move
-    - [ ] Folder options: New file, New subfolder, Rename, Delete, Move
-- [ ] New file button at top of sidebar
-- [ ] New folder button at top of sidebar
+  - [ ] Context menu appears as popover near the long pressed item
+  - [ ] File options: Rename, Delete, Move
+  - [ ] Folder options: New File, New Subfolder, Rename, Delete, Move
+  - [ ] Rename — inline input replaces item name, Enter to confirm, Escape to cancel
+  - [ ] Delete — confirmation alert
+  - [ ] Move — inline input for destination, Enter to confirm, Escape to cancel
+  - [ ] New File inside folder — inline input appears inside folder
+  - [ ] New Subfolder — inline input appears inside folder
+  - [ ] Refresh tree after every operation
+- [ ] New file button at top of sidebar — inline input appears in tree at current folder level
+- [ ] New folder button at top of sidebar — inline input appears in tree at current folder level
+- [ ] Inline naming: type name, Enter to confirm, Escape to cancel — no modal
 - [ ] Active file highlighted in tree
 - [ ] Temporary editor screen `app/editor/[name].tsx`
-    - [ ] Receives project name from route params
-    - [ ] Renders FileTree on the left
-    - [ ] Empty placeholder on the right for now
+  - [ ] Receives project name from route params
+  - [ ] Renders FileTree on the left
+  - [ ] Empty placeholder on the right for now
 
 ---
 
@@ -107,7 +115,6 @@
 ## 6. Custom Native Code Editor
 
 ### 6a. Tokenizer
-
 - [ ] Define token types: `keyword`, `string`, `comment`, `number`, `operator`, `identifier`, `punctuation`, `whitespace`
 - [ ] Write tokenizer for JavaScript/TypeScript
 - [ ] Write tokenizer for HTML
@@ -117,14 +124,12 @@
 - [ ] Language detection by file extension
 
 ### 6b. Syntax Highlighter
-
 - [ ] Map token types to colors (dark theme first)
 - [ ] Render highlighted code as `Text` spans inside a `ScrollView`
 - [ ] Handle long lines (horizontal scroll)
 - [ ] Re-tokenize on every keystroke (debounced for performance)
 
 ### 6c. Editor Component
-
 - [ ] Transparent `TextInput` overlaid on highlighted `Text`
 - [ ] Sync scroll position between TextInput and highlighted layer
 - [ ] Line numbers column on left, synced to scroll
@@ -135,7 +140,6 @@
 - [ ] Undo/redo (basic)
 
 ### 6d. Touch Optimizations
-
 - [ ] Tap to place cursor
 - [ ] Double tap to select word
 - [ ] Triple tap to select line
@@ -156,20 +160,17 @@
 ## 8. Git Integration (isomorphic-git)
 
 ### 8a. Setup
-
 - [ ] Initialize isomorphic-git with `expo-file-system` as the fs adapter
 - [ ] `git.init()` for new projects
 - [ ] `.gitignore` file created by default
 
 ### 8b. GitHub Auth
-
 - [ ] GitHub personal access token input screen
 - [ ] Store token securely via `expo-secure-store`
 - [ ] Validate token on entry
 - [ ] Sign out / remove token option
 
 ### 8c. Core Git Operations
-
 - [ ] Clone repo from GitHub URL
 - [ ] Stage files (`git add`)
 - [ ] Commit with message
@@ -180,7 +181,6 @@
 - [ ] Switch branch
 
 ### 8d. Git UI
-
 - [ ] Source control panel (like VS Code sidebar)
 - [ ] List of changed files
 - [ ] Diff viewer (before/after per file)
@@ -189,7 +189,6 @@
 - [ ] Push/pull buttons with status indicator
 
 ### 8e. Offline Queue
-
 - [ ] Detect network status via `expo-network`
 - [ ] If offline, queue commits locally
 - [ ] On reconnect, prompt to push queued commits
