@@ -4,6 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import {
   createFile,
   createFolder,
+  deleteFile,
+  deleteFolder,
   listDirectories,
   rename,
 } from "@/utils/filesystem";
@@ -31,7 +33,8 @@ type TreeItemProps = {
     isSelected: boolean;
     theme: Theme;
     onPress: () => void;
-    onLongPress: () => void;
+    onLongPress: (event: any) => void;
+    onContextMenu?: (event: any) => void;
 };
 
 function TreeItem({
@@ -44,6 +47,7 @@ function TreeItem({
     theme,
     onPress,
     onLongPress,
+    onContextMenu,
 }: TreeItemProps) {
     const styles = useMemo(
         () => ({
@@ -79,6 +83,7 @@ function TreeItem({
             style={styles.row}
             onPress={onPress}
             onLongPress={onLongPress}
+            {...(onContextMenu ? ({ onContextMenu } as any) : {})}
             accessibilityLabel={`${isFolder ? "Folder" : "File"} ${name}`}
         >
             <Ionicons name={icon.name as any} size={14} color={icon.color} />
@@ -130,6 +135,7 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
     const [expandedFolders, setExpandedFolders] = useState<Set<string>>(
         new Set(),
     );
+    const [activeFolder, setActiveFolder] = useState<string>("");
     const [selectedFile, setSelectedFile] = useState<string | null>(null);
     const [contents, setContents] = useState<
         Record<string, { files: string[]; folders: string[] }>
@@ -152,9 +158,24 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
         [projectName],
     );
 
+    const [contextMenu, setContextMenu] = useState<{
+        path: string;
+        type: "file" | "folder";
+        x: number;
+        y: number;
+    } | null>(null);
+
+    const handleItemPress = useCallback(
+        (path: string, type: "file" | "folder", event: any) => {
+            const { pageX, pageY } = event.nativeEvent;
+            setContextMenu({ path, type, x: pageX, y: pageY });
+        },
+        [],
+    );
     //toggling the folder as in enable/d9savkle insides
     const toggleFolder = useCallback(
         (path: string) => {
+            setActiveFolder(path);
             setExpandedFolders((prev) => {
                 const next = new Set(prev);
                 if (next.has(path)) {
@@ -315,11 +336,14 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                         isFolder={true}
                         depth={depth}
                         isExpanded={isExpanded}
-                        isSelected={false}
+                        isSelected={activeFolder === fullPath}
                         theme={theme}
                         onPress={() => toggleFolder(fullPath)}
-                        onLongPress={() =>
-                            console.log("long press folder", fullPath)
+                        onLongPress={(event) =>
+                            handleItemPress(fullPath, "folder", event)
+                        }
+                        onContextMenu={(event) =>
+                            handleItemPress(fullPath, "folder", event)
                         }
                     />,
                 );
@@ -327,6 +351,60 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                 if (isExpanded) {
                     items.push(...(renderTree(fullPath, depth + 1) ?? []));
                 }
+            }
+
+            if (
+                inlineInput &&
+                inlineInput.path === folderPath &&
+                folderPath !== ""
+            ) {
+                items.push(
+                    <View
+                        key="inline-input"
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            paddingVertical: 3,
+                            paddingLeft: 8 + (depth + 1) * 12,
+                            paddingRight: 8,
+                        }}
+                    >
+                        <Ionicons
+                            name={
+                                inlineInput.type === "folder"
+                                    ? "folder-outline"
+                                    : "document-outline"
+                            }
+                            size={14}
+                            color={theme.textSecondary}
+                        />
+                        <TextInput
+                            ref={inputRef}
+                            value={inlineInputValue}
+                            onChangeText={setInlineInputValue}
+                            onSubmitEditing={confirmInlineInput}
+                            onKeyPress={({ nativeEvent }) => {
+                                if (nativeEvent.key === "Escape")
+                                    cancelInlineInput();
+                            }}
+                            placeholder="File name..."
+                            placeholderTextColor={theme.textSecondary}
+                            style={{
+                                color: theme.text,
+                                fontSize: 13,
+                                marginLeft: 4,
+                                flex: 1,
+                                height: 22,
+                                backgroundColor: theme.inputBg,
+                                borderWidth: 1,
+                                borderColor: theme.accent,
+                                borderRadius: 2,
+                                paddingHorizontal: 4,
+                            }}
+                            accessibilityLabel="Enter name"
+                        />
+                    </View>,
+                );
             }
 
             for (const file of folderContents.files) {
@@ -346,8 +424,11 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                             setSelectedFile(fullPath);
                             onFileOpen(fullPath);
                         }}
-                        onLongPress={() =>
-                            console.log("long press file", fullPath)
+                        onLongPress={(event) =>
+                            handleItemPress(fullPath, "file", event)
+                        }
+                        onContextMenu={(event) =>
+                            handleItemPress(fullPath, "file", event)
                         }
                     />,
                 );
@@ -360,11 +441,21 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
             contents,
             expandedFolders,
             selectedFile,
+            activeFolder,
             theme,
             toggleFolder,
             onFileOpen,
+            inlineInput,
+            inlineInputValue,
+            confirmInlineInput,
+            cancelInlineInput,
         ],
     );
+
+    const popoverItemStyle = {
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+    };
 
     return (
         <Animated.View style={[styles.container, { width: sideBarWidth }]}>
@@ -394,9 +485,12 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                                     );
                                     console.log(
                                         "[FileTree] Setting inlineInput to:",
-                                        { path: "", type: "file" },
+                                        { path: activeFolder, type: "file" },
                                     );
-                                    setInlineInput({ path: "", type: "file" });
+                                    setInlineInput({
+                                        path: activeFolder,
+                                        type: "file",
+                                    });
                                     console.log(
                                         "[FileTree] inlineInput state set",
                                     );
@@ -417,10 +511,10 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                                     );
                                     console.log(
                                         "[FileTree] Setting inlineInput to:",
-                                        { path: "", type: "folder" },
+                                        { path: activeFolder, type: "folder" },
                                     );
                                     setInlineInput({
-                                        path: "",
+                                        path: activeFolder,
                                         type: "folder",
                                     });
                                     console.log(
@@ -505,6 +599,162 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                         {renderTree("", 0)}
                     </ScrollView>
                 </>
+            )}
+            {contextMenu && (
+                <TouchableOpacity
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                    }}
+                    onPress={() => setContextMenu(null)}
+                    activeOpacity={1}
+                >
+                    <View
+                        style={{
+                            position: "absolute",
+                            top: contextMenu.y,
+                            left: contextMenu.x,
+                            backgroundColor: theme.surface,
+                            borderWidth: 1,
+                            borderColor: theme.border,
+                            borderRadius: 4,
+                            paddingVertical: 4,
+                            minWidth: 160,
+                            shadowColor: "#000",
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.2,
+                            shadowRadius: 4,
+                            elevation: 5,
+                        }}
+                    >
+                        {contextMenu.type === "folder" ? (
+                            <>
+                                <TouchableOpacity
+                                    style={popoverItemStyle}
+                                    onPress={() => {
+                                        setInlineInput({
+                                            path: contextMenu.path,
+                                            type: "file",
+                                        });
+                                        setContextMenu(null);
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            color: theme.text,
+                                            fontSize: 13,
+                                        }}
+                                    >
+                                        New File
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={popoverItemStyle}
+                                    onPress={() => {
+                                        setInlineInput({
+                                            path: contextMenu.path,
+                                            type: "folder",
+                                        });
+                                        setContextMenu(null);
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            color: theme.text,
+                                            fontSize: 13,
+                                        }}
+                                    >
+                                        New Subfolder
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={popoverItemStyle}
+                                    onPress={() => {
+                                        setInlineInput({
+                                            path: contextMenu.path,
+                                            type: "rename",
+                                        });
+                                        setContextMenu(null);
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            color: theme.text,
+                                            fontSize: 13,
+                                        }}
+                                    >
+                                        Rename
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={popoverItemStyle}
+                                    onPress={() => {
+                                        deleteFolder(
+                                            projectName,
+                                            contextMenu.path,
+                                        );
+                                        loadContents("");
+                                        setContextMenu(null);
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            color: theme.error,
+                                            fontSize: 13,
+                                        }}
+                                    >
+                                        Delete
+                                    </Text>
+                                </TouchableOpacity>
+                            </>
+                        ) : (
+                            <>
+                                <TouchableOpacity
+                                    style={popoverItemStyle}
+                                    onPress={() => {
+                                        setInlineInput({
+                                            path: contextMenu.path,
+                                            type: "rename",
+                                        });
+                                        setContextMenu(null);
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            color: theme.text,
+                                            fontSize: 13,
+                                        }}
+                                    >
+                                        Rename
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={popoverItemStyle}
+                                    onPress={() => {
+                                        deleteFile(
+                                            projectName,
+                                            contextMenu.path,
+                                        );
+                                        loadContents("");
+                                        setContextMenu(null);
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            color: theme.error,
+                                            fontSize: 13,
+                                        }}
+                                    >
+                                        Delete
+                                    </Text>
+                                </TouchableOpacity>
+                            </>
+                        )}
+                    </View>
+                </TouchableOpacity>
             )}
         </Animated.View>
     );

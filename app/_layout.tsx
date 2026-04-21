@@ -1,26 +1,38 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-
-import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { useColorScheme } from "@/hooks/use-color-scheme";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import "react-native-gesture-handler";
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+    anchor: "(tabs)",
 };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+    const colorScheme = useColorScheme();
 
-  return (
-    <ErrorBoundary>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="editor/[name]" options={{ headerShown: false }} />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
-    </ErrorBoundary>
-  );
+    return (
+        <ErrorBoundary>
+            <ThemeProvider
+                value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            >
+                <Stack>
+                    <Stack.Screen
+                        name="(tabs)"
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                        name="editor/[name]"
+                        options={{ headerShown: false }}
+                    />
+                </Stack>
+                <StatusBar style="auto" />
+            </ThemeProvider>
+        </ErrorBoundary>
+    );
 }
