@@ -5,10 +5,6 @@ import { useMemo } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// ---------------------------------------------------------------------------
-// Styles
-// ---------------------------------------------------------------------------
-
 function makeStyles(t: Theme) {
     return StyleSheet.create({
         root: {
@@ -44,12 +40,6 @@ function makeStyles(t: Theme) {
             flex: 1,
             flexDirection: "row",
         },
-        fileTreePane: {
-            width: 240,
-            borderRightWidth: StyleSheet.hairlineWidth,
-            borderRightColor: t.border,
-            backgroundColor: t.surface,
-        },
         editorPane: {
             flex: 1,
             alignItems: "center",
@@ -63,10 +53,6 @@ function makeStyles(t: Theme) {
     });
 }
 
-// ---------------------------------------------------------------------------
-// Screen
-// ---------------------------------------------------------------------------
-
 export default function EditorScreen() {
     const { name } = useLocalSearchParams<{ name: string }>();
     const theme = useTheme();
@@ -74,11 +60,10 @@ export default function EditorScreen() {
 
     return (
         <SafeAreaView style={styles.root} edges={["top", "left", "right"]}>
-            {/* Top bar */}
             <View style={styles.topBar}>
                 <TouchableOpacity
                     style={styles.backButton}
-                    onPress={() => router.replace("/(tabs)")}
+                    onPress={() => router.back()}
                     accessibilityLabel="Back to projects"
                     accessibilityRole="button"
                 >
@@ -93,17 +78,14 @@ export default function EditorScreen() {
                 </Text>
             </View>
 
-            {/* Split body */}
             <View style={styles.body}>
-                {/* File tree */}
-                <View style={styles.fileTreePane}>
-                    <FileTree 
-                    projectName={name ?? ''} 
-                    onFileOpen={(relativePath) => console.log('open', relativePath)} 
-                    />
-                </View>
+                <FileTree
+                    projectName={name ?? ""}
+                    onFileOpen={(relativePath: string) =>
+                        console.log("open", relativePath)
+                    }
+                />
 
-                {/* Editor placeholder */}
                 <View style={styles.editorPane}>
                     <Text style={styles.editorPlaceholder}>
                         Editor coming soon
