@@ -35,6 +35,11 @@ type TreeItemProps = {
     onPress: () => void;
     onLongPress: (event: any) => void;
     onContextMenu?: (event: any) => void;
+    isRenaming: boolean;
+    renameValue: string;
+    onRenameChange: (value: string) => void;
+    onRenameSubmit: () => void;
+    onRenameCancel: () => void;
 };
 
 function TreeItem({
@@ -48,6 +53,11 @@ function TreeItem({
     onPress,
     onLongPress,
     onContextMenu,
+    isRenaming,
+    renameValue,
+    onRenameChange,
+    onRenameSubmit,
+    onRenameCancel,
 }: TreeItemProps) {
     const styles = useMemo(
         () => ({
@@ -95,9 +105,35 @@ function TreeItem({
                     style={{ marginLeft: 2 }}
                 />
             )}
-            <Text style={styles.name} numberOfLines={1}>
-                {name}
-            </Text>
+            {isRenaming ? (
+                <TextInput
+                    value={renameValue}
+                    onChangeText={onRenameChange}
+                    onSubmitEditing={onRenameSubmit}
+                    onBlur={onRenameCancel}
+                    onKeyPress={({ nativeEvent }) => {
+                        if (nativeEvent.key === "Escape") onRenameCancel();
+                    }}
+                    autoFocus
+                    style={{
+                        color: theme.text,
+                        fontSize: 13,
+                        marginLeft: 4,
+                        flex: 1,
+                        height: 22,
+                        backgroundColor: theme.inputBg,
+                        borderWidth: 1,
+                        borderColor: theme.accent,
+                        borderRadius: 2,
+                        paddingHorizontal: 4,
+                    }}
+                    accessibilityLabel="Rename"
+                />
+            ) : (
+                <Text style={styles.name} numberOfLines={1}>
+                    {name}
+                </Text>
+            )}
         </TouchableOpacity>
     );
 }
@@ -211,7 +247,7 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
             inlineInput,
         );
         console.log("[FileTree] inputRef.current:", inputRef.current);
-        if (inlineInput) {
+        if (inlineInput && inlineInput.type !== "rename") {
             scrollViewRef.current?.scrollTo({ y: 0, animated: true });
             setTimeout(() => inputRef.current?.focus(), 50);
         }
@@ -224,19 +260,41 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
             setInlineInputValue("");
             return;
         }
-        const fullPath = inlineInput.path
-            ? `${inlineInput.path}/${inlineInputValue.trim()}`
-            : inlineInputValue.trim();
 
         if (inlineInput.type === "file") {
+            const fullPath = inlineInput.path
+                ? `${inlineInput.path}/${inlineInputValue.trim()}`
+                : inlineInputValue.trim();
             createFile(projectName, fullPath);
+            await loadContents(inlineInput.path);
         } else if (inlineInput.type === "folder") {
+            const fullPath = inlineInput.path
+                ? `${inlineInput.path}/${inlineInputValue.trim()}`
+                : inlineInputValue.trim();
             createFolder(projectName, fullPath);
+            await loadContents(inlineInput.path);
         } else if (inlineInput.type === "rename") {
             rename(projectName, inlineInput.path, inlineInputValue.trim());
+            const parentPath = inlineInput.path
+                .split("/")
+                .slice(0, -1)
+                .join("/");
+
+            setContents((prev) => {
+                const next = { ...prev };
+                delete next[inlineInput.path];
+                return next;
+            });
+
+            setExpandedFolders((prev) => {
+                const next = new Set(prev);
+                next.delete(inlineInput.path);
+                return next;
+            });
+
+            await loadContents(parentPath);
         }
 
-        await loadContents(inlineInput.path);
         setInlineInput(null);
         setInlineInputValue("");
     }, [inlineInput, inlineInputValue, projectName, loadContents]);
@@ -345,6 +403,14 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                         onContextMenu={(event) =>
                             handleItemPress(fullPath, "folder", event)
                         }
+                        isRenaming={
+                            inlineInput?.type === "rename" &&
+                            inlineInput?.path === fullPath
+                        }
+                        renameValue={inlineInputValue}
+                        onRenameChange={setInlineInputValue}
+                        onRenameSubmit={confirmInlineInput}
+                        onRenameCancel={cancelInlineInput}
                     />,
                 );
 
@@ -383,6 +449,7 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                             value={inlineInputValue}
                             onChangeText={setInlineInputValue}
                             onSubmitEditing={confirmInlineInput}
+                            onBlur={cancelInlineInput}
                             onKeyPress={({ nativeEvent }) => {
                                 if (nativeEvent.key === "Escape")
                                     cancelInlineInput();
@@ -403,6 +470,17 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                             }}
                             accessibilityLabel="Enter name"
                         />
+                        <TouchableOpacity
+                            onPress={cancelInlineInput}
+                            accessibilityLabel="Cancel"
+                            style={{ padding: 4 }}
+                        >
+                            <Ionicons
+                                name="close"
+                                size={14}
+                                color={theme.textSecondary}
+                            />
+                        </TouchableOpacity>
                     </View>,
                 );
             }
@@ -430,6 +508,14 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                         onContextMenu={(event) =>
                             handleItemPress(fullPath, "file", event)
                         }
+                        isRenaming={
+                            inlineInput?.type === "rename" &&
+                            inlineInput?.path === fullPath
+                        }
+                        renameValue={inlineInputValue}
+                        onRenameChange={setInlineInputValue}
+                        onRenameSubmit={confirmInlineInput}
+                        onRenameCancel={cancelInlineInput}
                     />,
                 );
             }
@@ -475,7 +561,14 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
             ) : (
                 <>
                     <View style={styles.header}>
-                        <Text style={styles.projectName}>{projectName}</Text>
+                        <TouchableOpacity
+                            onPress={() => setActiveFolder("")}
+                            accessibilityLabel="Select root folder"
+                        >
+                            <Text style={styles.projectName}>
+                                {projectName}
+                            </Text>
+                        </TouchableOpacity>
                         <View style={styles.headerButtons}>
                             <TouchableOpacity
                                 style={styles.iconButton}
@@ -574,6 +667,7 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                                     value={inlineInputValue}
                                     onChangeText={setInlineInputValue}
                                     onSubmitEditing={confirmInlineInput}
+                                    onBlur={cancelInlineInput}
                                     onKeyPress={({ nativeEvent }) => {
                                         if (nativeEvent.key === "Escape")
                                             cancelInlineInput();
@@ -594,6 +688,17 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                                     }}
                                     accessibilityLabel="Enter name"
                                 />
+                                <TouchableOpacity
+                                    onPress={cancelInlineInput}
+                                    accessibilityLabel="Cancel"
+                                    style={{ padding: 4 }}
+                                >
+                                    <Ionicons
+                                        name="close"
+                                        size={14}
+                                        color={theme.textSecondary}
+                                    />
+                                </TouchableOpacity>
                             </View>
                         )}
                         {renderTree("", 0)}
@@ -673,6 +778,10 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                                 <TouchableOpacity
                                     style={popoverItemStyle}
                                     onPress={() => {
+                                        const currentName =
+                                            contextMenu.path.split("/").pop() ??
+                                            "";
+                                        setInlineInputValue(currentName);
                                         setInlineInput({
                                             path: contextMenu.path,
                                             type: "rename",
@@ -715,6 +824,10 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                                 <TouchableOpacity
                                     style={popoverItemStyle}
                                     onPress={() => {
+                                        const currentName =
+                                            contextMenu.path.split("/").pop() ??
+                                            "";
+                                        setInlineInputValue(currentName);
                                         setInlineInput({
                                             path: contextMenu.path,
                                             type: "rename",
