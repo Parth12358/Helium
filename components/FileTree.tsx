@@ -279,9 +279,15 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                 .split("/")
                 .slice(0, -1)
                 .join("/");
+            const newPath = parentPath
+                ? `${parentPath}/${inlineInputValue.trim()}`
+                : inlineInputValue.trim();
 
             setContents((prev) => {
                 const next = { ...prev };
+                if (next[inlineInput.path]) {
+                    next[newPath] = next[inlineInput.path];
+                }
                 delete next[inlineInput.path];
                 return next;
             });
@@ -289,6 +295,9 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
             setExpandedFolders((prev) => {
                 const next = new Set(prev);
                 next.delete(inlineInput.path);
+                if (prev.has(inlineInput.path)) {
+                    next.add(newPath);
+                }
                 return next;
             });
 
@@ -422,7 +431,8 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
             if (
                 inlineInput &&
                 inlineInput.path === folderPath &&
-                folderPath !== ""
+                folderPath !== "" &&
+                inlineInput.type !== "rename"
             ) {
                 items.push(
                     <View
