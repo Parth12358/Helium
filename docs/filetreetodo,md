@@ -1,78 +1,88 @@
 # FileTree Component Todo — components/FileTree.tsx
 
 ## Setup
-- [ ] Create components/FileTree.tsx
-- [ ] Define props: projectName: string, onFileOpen: (relativePath: string) => void
-- [ ] Import listDirectories, createFile, createFolder, deleteFile, deleteFolder, rename, moveFile, moveFolder from @/utils/filesystem
-- [ ] Import useTheme from constants/theme.ts
-- [ ] Import useCallback, useState, useMemo from react
+
+- [x] Create components/FileTree.tsx
+- [x] Define props: projectName: string, onFileOpen: (relativePath: string) => void
+- [x] Import listDirectories, createFile, createFolder, deleteFile, deleteFolder, rename, moveFile, moveFolder from @/utils/filesystem
+- [x] Import useTheme from constants/theme.ts
+- [x] Import useCallback, useState, useMemo from react
 
 ## State
-- [ ] collapsed: boolean — sidebar collapsed or expanded
-- [ ] expandedFolders: Set<string> — tracks which folders are open
-- [ ] selectedFile: string | null — currently active file
-- [ ] contents at each path — files and folders per directory
-- [ ] inlineInput: { path: string, type: 'file' | 'folder' | 'rename' } | null — tracks active inline input
+
+- [x] collapsed: boolean — sidebar collapsed or expanded
+- [x] expandedFolders: Set<string> — tracks which folders are open
+- [x] selectedFile: string | null — currently active file
+- [x] contents at each path — files and folders per directory
+- [x] inlineInput: { path: string, type: 'file' | 'folder' | 'rename' } | null — tracks active inline input
 
 ## Collapsible
-- [ ] Toggle button at top of sidebar
-- [ ] When collapsed, render thin bar (~40px) with only toggle icon
-- [ ] When expanded, render full sidebar
-- [ ] Animate with Animated from react-native
+
+- [x] Toggle button at top of sidebar
+- [x] When collapsed, render thin bar (~40px) with only toggle icon
+- [x] When expanded, render full sidebar
+- [x] Animate with Animated from react-native
 
 ## Header (expanded only)
-- [ ] Project name at top
-- [ ] New File button — triggers inline input at root level
-- [ ] New Folder button — triggers inline input at root level
+
+- [x] Project name at top
+- [x] New File button — triggers inline input at root level
+- [x] New Folder button — triggers inline input at root level
 
 ## File Tree Rendering
-- [ ] Load root contents on mount via listDirectories(projectName, '')
-- [ ] Render folders with chevron icon (▶ collapsed, ▼ expanded)
-- [ ] Tap folder to toggle expand/collapse
-- [ ] When folder expanded, load its contents via listDirectories(projectName, relativePath)
-- [ ] Render files with icon based on extension
-- [ ] Tap file to call onFileOpen(relativePath)
-- [ ] Highlight selected/active file
-- [ ] Indent nested items based on depth
+
+- [x] Load root contents on mount via listDirectories(projectName, '')
+- [x] Render folders with chevron icon (▶ collapsed, ▼ expanded)
+- [x] Tap folder to toggle expand/collapse
+- [x] When folder expanded, load its contents via listDirectories(projectName, relativePath)
+- [x] Render files with icon based on extension
+- [x] Tap file to call onFileOpen(relativePath)
+- [x] Highlight selected/active file
+- [x] Indent nested items based on depth
 
 ## Inline Input (VS Code style)
-- [ ] Appears directly in the tree at the relevant folder level
-- [ ] Used for: new file, new folder, rename
-- [ ] TextInput auto-focused when it appears
-- [ ] Enter to confirm, Escape to cancel
-- [ ] No modal — fully inline
-- [ ] Refresh tree after confirm
+
+- [x] Appears directly in the tree at the relevant folder level
+- [x] Used for: new file, new folder, rename
+- [x] TextInput auto-focused when it appears
+- [x] Enter to confirm, Escape to cancel
+- [x] No modal — fully inline
+- [x] Refresh tree after confirm
 
 ## File Icons
-- [ ] .ts .tsx — blue
-- [ ] .js .jsx — yellow
-- [ ] .css — purple
-- [ ] .html — orange
-- [ ] .json — yellow
-- [ ] .md — white
-- [ ] folders — yellow when expanded, default when collapsed
+
+- [x] .ts .tsx — blue
+- [x] .js .jsx — yellow
+- [x] .css — purple
+- [x] .html — orange
+- [x] .json — yellow
+- [x] .md — white
+- [x] folders — yellow when expanded, default when collapsed
 
 ## Context Menu (long press)
-- [ ] Appears as popover near the long pressed item — no bottom sheet
-- [ ] File options: Rename, Delete, Move
-- [ ] Folder options: New File, New Subfolder, Rename, Delete, Move
-- [ ] Rename — dismisses popover, triggers inline input replacing item name
-- [ ] Delete — confirmation alert, calls deleteFile() or deleteFolder()
-- [ ] Move — inline input for destination path, Enter to confirm, Escape to cancel
-- [ ] New File inside folder — inline input appears inside that folder
-- [ ] New Subfolder — inline input appears inside that folder
-- [ ] Refresh tree after every operation
+
+- [x] Appears as popover near the long pressed item — no bottom sheet
+- [x] File options: Rename, Delete, Move
+- [x] Folder options: New File, New Subfolder, Rename, Delete, Move
+- [x] Rename — dismisses popover, triggers inline input replacing item name
+- [x] Delete — confirmation alert, calls deleteFile() or deleteFolder()
+- [x] Move — inline input for destination path, Enter to confirm, Escape to cancel
+- [x] New File inside folder — inline input appears inside that folder
+- [x] New Subfolder — inline input appears inside that folder
+- [x] Refresh tree after every operation
 
 ## New File / New Folder (header buttons)
-- [ ] Inline input appears at project root level in the tree
-- [ ] Type name, Enter to confirm, Escape to cancel
-- [ ] No modal — VS Code style inline naming
-- [ ] Refresh tree after creation
+
+- [x] Inline input appears at project root level in the tree
+- [x] Type name, Enter to confirm, Escape to cancel
+- [x] No modal — VS Code style inline naming
+- [x] Refresh tree after creation
 
 ## Rules
-- [ ] All colors from useTheme()
-- [ ] Styles memoized with useMemo
-- [ ] All filesystem results handle ok and error
-- [ ] No hardcoded colors or inline styles
-- [ ] TypeScript strict compliant
-- [ ] accessibilityLabel on all interactive elements
+
+- [x] All colors from useTheme()
+- [x] Styles memoized with useMemo
+- [x] All filesystem results handle ok and error
+- [x] No hardcoded colors or inline styles
+- [x] TypeScript strict compliant
+- [x] accessibilityLabel on all interactive elements

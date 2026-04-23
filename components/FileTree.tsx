@@ -11,6 +11,7 @@ import {
 } from "@/utils/filesystem";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  Alert,
   Animated,
   ScrollView,
   Text,
@@ -645,74 +646,82 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <ScrollView ref={scrollViewRef} style={{ flex: 1 }}>
-                        {inlineInput && inlineInput.path === "" && (
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    paddingVertical: 3,
-                                    paddingLeft: 8,
-                                    paddingRight: 8,
-                                }}
-                            >
-                                {
-                                    (console.log(
-                                        "[FileTree] Direct JSX inline input rendered for path:",
-                                        inlineInput?.path,
-                                    ),
-                                    null)
-                                }
-                                <Ionicons
-                                    name={
-                                        inlineInput.type === "folder"
-                                            ? "folder-outline"
-                                            : "document-outline"
-                                    }
-                                    size={14}
-                                    color={theme.textSecondary}
-                                />
-                                <TextInput
-                                    ref={inputRef}
-                                    value={inlineInputValue}
-                                    onChangeText={setInlineInputValue}
-                                    onSubmitEditing={confirmInlineInput}
-                                    onBlur={cancelInlineInput}
-                                    onKeyPress={({ nativeEvent }) => {
-                                        if (nativeEvent.key === "Escape")
-                                            cancelInlineInput();
-                                    }}
-                                    placeholder="File name..."
-                                    placeholderTextColor={theme.textSecondary}
-                                    style={{
-                                        color: theme.text,
-                                        fontSize: 13,
-                                        marginLeft: 4,
-                                        flex: 1,
-                                        height: 22,
-                                        backgroundColor: theme.inputBg,
-                                        borderWidth: 1,
-                                        borderColor: theme.accent,
-                                        borderRadius: 2,
-                                        paddingHorizontal: 4,
-                                    }}
-                                    accessibilityLabel="Enter name"
-                                />
-                                <TouchableOpacity
-                                    onPress={cancelInlineInput}
-                                    accessibilityLabel="Cancel"
-                                    style={{ padding: 4 }}
-                                >
-                                    <Ionicons
-                                        name="close"
-                                        size={14}
-                                        color={theme.textSecondary}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        {renderTree("", 0)}
-                    </ScrollView>
+<View
+  style={{ flex: 1 }}
+  onStartShouldSetResponder={() => {
+    setActiveFolder('');
+    return false;
+  }}
+>
+  <ScrollView ref={scrollViewRef} style={{ flex: 1 }}>
+    {inlineInput && inlineInput.path === "" && (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          paddingVertical: 3,
+          paddingLeft: 8,
+          paddingRight: 8,
+        }}
+      >
+        {
+          (console.log(
+            "[FileTree] Direct JSX inline input rendered for path:",
+            inlineInput?.path,
+          ),
+          null)
+        }
+        <Ionicons
+          name={
+            inlineInput.type === "folder"
+              ? "folder-outline"
+              : "document-outline"
+          }
+          size={14}
+          color={theme.textSecondary}
+        />
+        <TextInput
+          ref={inputRef}
+          value={inlineInputValue}
+          onChangeText={setInlineInputValue}
+          onSubmitEditing={confirmInlineInput}
+          onBlur={cancelInlineInput}
+          onKeyPress={({ nativeEvent }) => {
+            if (nativeEvent.key === "Escape")
+              cancelInlineInput();
+          }}
+          placeholder="File name..."
+          placeholderTextColor={theme.textSecondary}
+          style={{
+            color: theme.text,
+            fontSize: 13,
+            marginLeft: 4,
+            flex: 1,
+            height: 22,
+            backgroundColor: theme.inputBg,
+            borderWidth: 1,
+            borderColor: theme.accent,
+            borderRadius: 2,
+            paddingHorizontal: 4,
+          }}
+          accessibilityLabel="Enter name"
+        />
+        <TouchableOpacity
+          onPress={cancelInlineInput}
+          accessibilityLabel="Cancel"
+          style={{ padding: 4 }}
+        >
+          <Ionicons
+            name="close"
+            size={14}
+            color={theme.textSecondary}
+          />
+        </TouchableOpacity>
+      </View>
+    )}
+    {renderTree("", 0)}
+  </ScrollView>
+</View>
                 </>
             )}
             {contextMenu && (
@@ -811,12 +820,56 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                                 <TouchableOpacity
                                     style={popoverItemStyle}
                                     onPress={() => {
-                                        deleteFolder(
-                                            projectName,
-                                            contextMenu.path,
-                                        );
-                                        loadContents("");
-                                        setContextMenu(null);
+                                        const folderContents =
+                                            contents[contextMenu.path];
+                                        const hasContents =
+                                            folderContents &&
+                                            (folderContents.files.length > 0 ||
+                                                folderContents.folders.length >
+                                                    0);
+
+                                        const doDelete = () => {
+                                            deleteFolder(
+                                                projectName,
+                                                contextMenu.path,
+                                            );
+                                            const parentPath = contextMenu.path
+                                                .split("/")
+                                                .slice(0, -1)
+                                                .join("/");
+                                            setContents((prev) => {
+                                                const next = { ...prev };
+                                                delete next[contextMenu.path];
+                                                return next;
+                                            });
+                                            setExpandedFolders((prev) => {
+                                                const next = new Set(prev);
+                                                next.delete(contextMenu.path);
+                                                return next;
+                                            });
+                                            loadContents(parentPath);
+                                            setContextMenu(null);
+                                        };
+
+                                        if (hasContents) {
+                                            Alert.alert(
+                                                "Delete Folder",
+                                                `"${contextMenu.path.split("/").pop()}" contains files. This cannot be undone.`,
+                                                [
+                                                    {
+                                                        text: "Cancel",
+                                                        style: "cancel",
+                                                    },
+                                                    {
+                                                        text: "Delete",
+                                                        style: "destructive",
+                                                        onPress: doDelete,
+                                                    },
+                                                ],
+                                            );
+                                        } else {
+                                            doDelete();
+                                        }
                                     }}
                                 >
                                     <Text
@@ -861,7 +914,16 @@ export default function FileTree({ projectName, onFileOpen }: Props) {
                                             projectName,
                                             contextMenu.path,
                                         );
-                                        loadContents("");
+                                        const parentPath = contextMenu.path
+                                            .split("/")
+                                            .slice(0, -1)
+                                            .join("/");
+                                        setContents((prev) => {
+                                            const next = { ...prev };
+                                            delete next[contextMenu.path];
+                                            return next;
+                                        });
+                                        loadContents(parentPath);
                                         setContextMenu(null);
                                     }}
                                 >
