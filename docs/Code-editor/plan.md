@@ -326,13 +326,35 @@ app/settings/theme.tsx        — theme picker + custom theme editor
 
 All preferences read from and write to `utils/settings.ts`.
 
-| Preference        | Type      | Default | UI                            |
-| ----------------- | --------- | ------- | ----------------------------- |
-| `autoSave`        | `boolean` | `false` | Switch                        |
-| `autoSaveDelay`   | `number`  | `1000`  | Slider (500ms–5000ms)         |
-| `showLineNumbers` | `boolean` | `true`  | Switch                        |
-| `fontSize`        | `number`  | `13`    | Stepper (10–24)               |
-| `tabSize`         | `number`  | `4`     | Segmented control (2 / 4 / 8) |
+| Preference        | Type      | Default     | UI                                                  |
+| ----------------- | --------- | ----------- | --------------------------------------------------- |
+| `autoSave`        | `boolean` | `false`     | Switch                                              |
+| `autoSaveDelay`   | `number`  | `1000`      | Slider (500ms–5000ms)                               |
+| `showLineNumbers` | `boolean` | `true`      | Switch                                              |
+| `fontSize`        | `number`  | `13`        | Stepper (10–24)                                     |
+| `fontFamily`      | `string`  | `"Courier"` | Font picker list                                    |
+| `fontWeight`      | `string`  | `"400"`     | Segmented control (Light / Regular / Medium / Bold) |
+| `lineHeight`      | `number`  | `1.5`       | Slider (1.0–2.5)                                    |
+| `letterSpacing`   | `number`  | `0`         | Slider (-1–3)                                       |
+| `tabSize`         | `number`  | `4`         | Segmented control (2 / 4 / 8)                       |
+| `cursorStyle`     | `string`  | `"line"`    | Segmented control (Line / Block / Underline)        |
+
+### Available fonts
+
+Monospace fonts available on iOS without custom loading:
+
+- `Courier` — system default monospace
+- `Courier New`
+- `Menlo`
+- `Monaco`
+- `Consolas`
+
+Custom fonts (require `expo-font` loading):
+
+- `JetBrains Mono`
+- `Fira Code`
+- `Source Code Pro`
+- `Hack`
 
 ### Theme section (`app/settings/theme.tsx`)
 
@@ -365,7 +387,12 @@ All preferences read from and write to `utils/settings.ts`.
 | ----------------- | --------- | --------------- |
 | `showLineNumbers` | `boolean` | `true`          |
 | `fontSize`        | `number`  | `13`            |
+| `fontFamily`      | `string`  | `"Courier"`     |
+| `fontWeight`      | `string`  | `"400"`         |
+| `lineHeight`      | `number`  | `1.5`           |
+| `letterSpacing`   | `number`  | `0`             |
 | `tabSize`         | `number`  | `4`             |
+| `cursorStyle`     | `string`  | `"line"`        |
 | `autoSaveDelay`   | `number`  | `1000`          |
 | `activeThemeId`   | `string`  | `"helium-dark"` |
 
@@ -432,7 +459,12 @@ All preferences read from and write to `utils/settings.ts`.
 
 - [ ] Restructure `app/settings/` into `index.tsx`, `editor.tsx`, `theme.tsx`
 - [ ] Build Editor Preferences screen with all toggles, sliders, steppers
+- [ ] Add font picker list with system and custom font options
+- [ ] Add font weight segmented control
+- [ ] Add line height slider
+- [ ] Add letter spacing slider
+- [ ] Add cursor style segmented control
 - [ ] Build Theme screen with preset list and custom theme list
 - [ ] Build `ColorPickerRow` component
 - [ ] Build `ThemePreview` swatch component
-- [ ] Add `activeThemeId` and `autoSaveDelay` to `Settings` type
+- [ ] Add all new settings fields to `Settings` type

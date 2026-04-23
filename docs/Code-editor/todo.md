@@ -107,9 +107,9 @@
 
 ### `EditorInput` component (`components/editor/EditorInput.tsx`)
 
-- [ ] Accept props: `content`, `onChange`, `onScroll`, `scrollEventThrottle`, `fontSize`, `lineHeight`, `tabSize`, `ref`
+- [ ] Accept props: `content`, `onChange`, `onScroll`, `scrollEventThrottle`, `fontSize`, `fontFamily`, `fontWeight`, `lineHeight`, `letterSpacing`, `tabSize`, `cursorStyle`, `ref`
 - [ ] Transparent background — positioned absolutely over `HighlightLayer`
-- [ ] Same font family, font size, line height as `HighlightLayer` — must match exactly
+- [ ] Same font family, size, weight, line height, letter spacing as `HighlightLayer` — must match exactly
 - [ ] `multiline`, `scrollEnabled`, `autoCorrect={false}`, `autoCapitalize="none"`, `spellCheck={false}`
 - [ ] `accessibilityLabel="Code editor"`
 
@@ -210,12 +210,12 @@
 
 ### `CodeEditor` component (`components/editor/CodeEditor.tsx`)
 
-- [ ] Accept props: `content`, `language`, `fontSize`, `lineHeight`, `tabSize`, `showLineNumbers`, `onChange`, `onScroll`, `scrollEventThrottle`, `ref`
+- [ ] Accept props: `content`, `language`, `fontSize`, `fontFamily`, `fontWeight`, `lineHeight`, `letterSpacing`, `tabSize`, `cursorStyle`, `showLineNumbers`, `onChange`, `onScroll`, `scrollEventThrottle`, `ref`
 - [ ] Compose `Gutter` + `HighlightLayer` + `EditorInput` into a single component
 - [ ] Run `tokenize(content, language)` and pass tokens to `HighlightLayer` — debounced on content change
 - [ ] Share scroll ref across all three layers
 - [ ] Wire `useUndoRedo` hook — pass `push` into `EditorInput` onChange, expose `undo`/`redo` via ref or context
-- [ ] Load `fontSize`, `tabSize`, `showLineNumbers` from settings
+- [ ] Load all font and typography settings from `utils/settings.ts`
 - [ ] No inline styles — all via `makeStyles`
 
 ### Wire into editor screen
@@ -270,7 +270,14 @@
 - [ ] `autoSaveDelay` slider — 500ms to 5000ms
 - [ ] `showLineNumbers` toggle — `Switch`
 - [ ] `fontSize` stepper — range 10–24
+- [ ] `fontFamily` picker — list of available monospace fonts with live preview
+    - System fonts (no loading needed): `Courier`, `Courier New`, `Menlo`, `Monaco`, `Consolas`
+    - Custom fonts via `expo-font`: `JetBrains Mono`, `Fira Code`, `Source Code Pro`, `Hack`
+- [ ] `fontWeight` segmented control — Light / Regular / Medium / Bold
+- [ ] `lineHeight` slider — range 1.0–2.5
+- [ ] `letterSpacing` slider — range -1–3
 - [ ] `tabSize` segmented control — options: 2, 4, 8
+- [ ] `cursorStyle` segmented control — Line / Block / Underline
 
 ### Theme Screen (`app/settings/theme.tsx`)
 
@@ -300,4 +307,9 @@
 - [ ] Add `autoSaveDelay: number` (default `1000`)
 - [ ] Add `showLineNumbers: boolean` (default `true`)
 - [ ] Add `fontSize: number` (default `13`)
+- [ ] Add `fontFamily: string` (default `"Courier"`)
+- [ ] Add `fontWeight: string` (default `"400"`)
+- [ ] Add `lineHeight: number` (default `1.5`)
+- [ ] Add `letterSpacing: number` (default `0`)
 - [ ] Add `tabSize: number` (default `4`)
+- [ ] Add `cursorStyle: string` (default `"line"`)
