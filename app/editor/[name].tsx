@@ -1,4 +1,4 @@
-import { Tab } from "@/.expo/types/editor";
+import { Tab } from "@/app/types/editor";
 import FileTree from "@/components/FileTree";
 import TabBar from "@/components/TabBar";
 import { Theme, useTheme } from "@/constants/theme";

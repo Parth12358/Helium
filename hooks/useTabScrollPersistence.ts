@@ -1,4 +1,4 @@
-import { Tab } from "@/.expo/types/editor";
+import { Tab } from "@/app/types/editor";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
     TextInput,

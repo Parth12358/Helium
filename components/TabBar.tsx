@@ -1,4 +1,4 @@
-import { Tab } from "@/.expo/types/editor";
+import { Tab } from "@/app/types/editor";
 import { Theme, useTheme } from "@/constants/theme";
 import { useMemo } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
