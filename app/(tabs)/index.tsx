@@ -8,6 +8,7 @@ import {
 } from "@/utils/filesystem";
 import { router } from "expo-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import {
     ActionSheetIOS,
     Alert,
@@ -45,6 +46,14 @@ function makeStyles(t: Theme) {
             fontWeight: "600",
             color: t.text,
             letterSpacing: 0.3,
+        },
+        headerRight: {
+            flexDirection: "row" as const,
+            alignItems: "center" as const,
+            gap: 8,
+        },
+        settingsButton: {
+            padding: 4,
         },
         newButton: {
             backgroundColor: t.accent,
@@ -281,7 +290,10 @@ export default function HomePage() {
     }
 
     function handleOpenProject(projectName: string) {
-        router.push({ pathname: "/editor/[name]", params: { name: projectName } });
+        router.push({
+            pathname: "/editor/[name]",
+            params: { name: projectName },
+        });
     }
 
     // --- render ---
@@ -293,14 +305,24 @@ export default function HomePage() {
                 <Text style={styles.appName} accessibilityRole="header">
                     Helium
                 </Text>
-                <TouchableOpacity
-                    style={styles.newButton}
-                    onPress={openCreateModal}
-                    accessibilityLabel="New Project"
-                    accessibilityRole="button"
-                >
-                    <Text style={styles.newButtonText}>New Project</Text>
-                </TouchableOpacity>
+                <View style={styles.headerRight}>
+                    <TouchableOpacity
+                        style={styles.settingsButton}
+                        onPress={() => router.push("/settings")}
+                        accessibilityLabel="Open settings"
+                        accessibilityRole="button"
+                    >
+                        <Ionicons name="settings-outline" size={20} color={theme.textSecondary} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.newButton}
+                        onPress={openCreateModal}
+                        accessibilityLabel="New Project"
+                        accessibilityRole="button"
+                    >
+                        <Text style={styles.newButtonText}>New Project</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             {/* Project list */}
