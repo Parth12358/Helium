@@ -15,6 +15,7 @@ import {
     View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 function makeStyles(t: Theme) {
     return StyleSheet.create({
         root: {

@@ -100,15 +100,15 @@
 
 ## 5. Multi-Tab System
 
-- [ ] Tab bar component across top of editor
-- [ ] Open file adds a tab
-- [ ] Tap tab to switch to that file
-- [ ] Close tab (x button)
-- [ ] Unsaved changes indicator on tab (dot or asterisk)
-- [ ] Tabs persist scroll/cursor position per file
-- [ ] Max tab limit or horizontal scroll for many tabs
-- [ ] File tree sidebar collapsible (toggle button)
-- [ ] File tree sidebar resizable/movable like VS Code
+- [x] Tab bar component across top of editor
+- [x] Open file adds a tab
+- [x] Tap tab to switch to that file
+- [x] Close tab (x button)
+- [x] Unsaved changes indicator on tab (dot or asterisk)
+- [x] Tabs persist scroll/cursor position per file
+- [ ] Max tab limit or horizontal scroll for many tabs - deferred
+- [ ] File tree sidebar collapsible (toggle button) - deferred
+- [ ] File tree sidebar resizable/movable like VS Code - deferred
 
 ---
 
