@@ -7,22 +7,22 @@
 - [x] Install Expo CLI
 - [x] Create new Expo project — `iVibe`
 - [x] Install core dependencies
-    - [x] `isomorphic-git`
-    - [x] `@expo/vector-icons`
-    - [x] `expo-file-system`
-    - [x] `expo-secure-store`
-    - [x] `expo-network`
+  - [x] `isomorphic-git`
+  - [x] `@expo/vector-icons`
+  - [x] `expo-file-system`
+  - [x] `expo-secure-store`
+  - [x] `expo-network`
 - [x] Set up folder structure
-    ```
-    /app
-      /editor
-      /filemanager
-      /git
-      /utils
-    /components
-    /constants
-    /hooks
-    ```
+  ```
+  /app
+    /editor
+    /filemanager
+    /git
+    /utils
+  /components
+  /constants
+  /hooks
+  ```
 - [x] Configure app.json (dark mode, tablet support, expo-router, splash screen)
 - [x] TypeScript configured with strict mode
 
@@ -57,11 +57,11 @@
 - [x] List all existing projects
 - [x] Tap project to open it and navigate to file tree
 - [x] Create new project button
-    - [x] Input for project name
-    - [x] Confirmation to create
+  - [x] Input for project name
+  - [x] Confirmation to create
 - [x] Long press project for options (three dots button also)
-    - [x] Rename project
-    - [x] Delete project
+  - [x] Rename project
+  - [x] Delete project
 - [x] Empty state when no projects exist
 
 ---
@@ -69,32 +69,32 @@
 ## 4. File Tree Sidebar
 
 - [x] `FileTree` component in `components/FileTree.tsx`
-    - [x] Receives `projectName` as prop
-    - [x] Collapsible — collapses to thin bar with icon to re-expand
-    - [x] Draggable/resizable width like VS Code
+  - [x] Receives `projectName` as prop
+  - [x] Collapsible — collapses to thin bar with icon to re-expand
+  - [x] Draggable/resizable width like VS Code
 - [x] Recursive file tree rendering
-    - [x] Renders folders and files
-    - [x] Folders have chevron, tap to expand/collapse inline
-    - [x] Files show correct icon per extension (.js, .ts, .css, .md, etc.)
+  - [x] Renders folders and files
+  - [x] Folders have chevron, tap to expand/collapse inline
+  - [x] Files show correct icon per extension (.js, .ts, .css, .md, etc.)
 - [x] Tap file to open in editor
 - [x] Long press file or folder for context menu
-    - [x] Context menu appears as popover near the long pressed item
-    - [x] File options: Rename, Delete, Move
-    - [x] Folder options: New File, New Subfolder, Rename, Delete, Move
-    - [x] Rename — inline input replaces item name, Enter to confirm, Escape to cancel
-    - [x] Delete — confirmation alert
-    - [x] Move — inline input for destination, Enter to confirm, Escape to cancel
-    - [x] New File inside folder — inline input appears inside folder
-    - [x] New Subfolder — inline input appears inside folder
-    - [x] Refresh tree after every operation
+  - [x] Context menu appears as popover near the long pressed item
+  - [x] File options: Rename, Delete, Move
+  - [x] Folder options: New File, New Subfolder, Rename, Delete, Move
+  - [x] Rename — inline input replaces item name, Enter to confirm, Escape to cancel
+  - [x] Delete — confirmation alert
+  - [x] Move — inline input for destination, Enter to confirm, Escape to cancel
+  - [x] New File inside folder — inline input appears inside folder
+  - [x] New Subfolder — inline input appears inside folder
+  - [x] Refresh tree after every operation
 - [x] New file button at top of sidebar — inline input appears in tree at current folder level
 - [x] New folder button at top of sidebar — inline input appears in tree at current folder level
 - [x] Inline naming: type name, Enter to confirm, Escape to cancel — no modal
 - [x] Active file highlighted in tree
 - [x] Temporary editor screen `app/editor/[name].tsx`
-    - [x] Receives project name from route params
-    - [x] Renders FileTree on the left
-    - [x] Empty placeholder on the right for now
+  - [x] Receives project name from route params
+  - [x] Renders FileTree on the left
+  - [x] Empty placeholder on the right for now
 
 ---
 
@@ -112,7 +112,7 @@
 
 ---
 
-## 6. Custom Native Code Editor
+## 6. Custom Native Code Editor ---DEFFERED
 
 ### 6a. Tokenizer
 
@@ -154,10 +154,10 @@
 
 ## 7. Save System
 
-- [ ] Auto-save on pause (debounced, ~1s after last keystroke)
-- [ ] Manual save (cmd+s or save button)
-- [ ] Unsaved changes tracked per file
-- [ ] Warn before closing unsaved file
+- [x] Auto-save on pause (debounced, ~1s after last keystroke)
+- [x] Manual save (cmd+s or save button)
+- [x] Unsaved changes tracked per file
+- [x] Warn before closing unsaved file
 
 ---
 

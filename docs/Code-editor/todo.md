@@ -13,13 +13,13 @@
 ### Language Detection (`utils/tokenizer.ts`)
 
 - [ ] Write `detectLanguage(filename: string): Language` that maps file extension to language
-    - `.ts` `.tsx` → `typescript`
-    - `.js` `.jsx` → `javascript`
-    - `.css` → `css`
-    - `.html` → `html`
-    - `.json` → `json`
-    - `.md` → `markdown`
-    - everything else → `plaintext`
+  - `.ts` `.tsx` → `typescript`
+  - `.js` `.jsx` → `javascript`
+  - `.css` → `css`
+  - `.html` → `html`
+  - `.json` → `json`
+  - `.md` → `markdown`
+  - everything else → `plaintext`
 
 ### JavaScript / TypeScript Tokenizer
 
@@ -88,7 +88,7 @@
 ### Theme extension (`constants/theme.ts`)
 
 - [ ] Add `syntax` object to `Theme` interface:
-    - `keyword`, `string`, `comment`, `number`, `operator`, `punctuation`, `tag`, `attribute`, `identifier`, `whitespace`, `plain`
+  - `keyword`, `string`, `comment`, `number`, `operator`, `punctuation`, `tag`, `attribute`, `identifier`, `whitespace`, `plain`
 - [ ] Add syntax colors to all preset themes (dark first)
 
 ### `HighlightLayer` component (`components/editor/HighlightLayer.tsx`)
@@ -271,8 +271,8 @@
 - [ ] `showLineNumbers` toggle — `Switch`
 - [ ] `fontSize` stepper — range 10–24
 - [ ] `fontFamily` picker — list of available monospace fonts with live preview
-    - System fonts (no loading needed): `Courier`, `Courier New`, `Menlo`, `Monaco`, `Consolas`
-    - Custom fonts via `expo-font`: `JetBrains Mono`, `Fira Code`, `Source Code Pro`, `Hack`
+  - System fonts (no loading needed): `Courier`, `Courier New`, `Menlo`, `Monaco`, `Consolas`
+  - Custom fonts via `expo-font`: `JetBrains Mono`, `Fira Code`, `Source Code Pro`, `Hack`
 - [ ] `fontWeight` segmented control — Light / Regular / Medium / Bold
 - [ ] `lineHeight` slider — range 1.0–2.5
 - [ ] `letterSpacing` slider — range -1–3
